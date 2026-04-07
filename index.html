@@ -8,7 +8,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <link rel="stylesheet" href="styles.css?v=x7k9p2">
+    <link rel="stylesheet" href="styles.css?v=m2n5p8">
 </head>
 <body>
     <div class="app-container">
@@ -33,7 +33,10 @@
                 </select>
             </div>
 
-            <button id="find-route-btn" class="primary-btn">Find Route</button>
+            <button id="find-route-btn" class="primary-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                Find Route
+            </button>
             <button id="reset-btn" class="secondary-btn">Reset</button>
 
             <div id="directions-panel" class="directions-panel hidden">
@@ -45,13 +48,13 @@
         <!-- Map Area -->
         <div class="map-area">
             <div class="map-controls">
-                <button class="floor-btn active" data-floor="f1">Floor 1</button>
-                <button class="floor-btn" data-floor="f2">Floor 2</button>
+                <button class="floor-btn active" data-floor="f1">FLOOR 01</button>
+                <button class="floor-btn" data-floor="f2">FLOOR 02</button>
             </div>
-            
+
             <div class="map-container" id="map-container">
                 <svg id="map-svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet">
-                    <!-- Base paths / Corridors (static drawing could go here, but we will generate dynamically for simplicity) -->
+                    <!-- Base paths / Corridors -->
                     <g id="corridors"></g>
                     <!-- Route paths -->
                     <g id="route-layer"></g>
@@ -62,8 +65,8 @@
         </div>
     </div>
 
-    <script src="data.js?v=x7k9p2"></script>
-    <script src="script.js?v=x7k9p2"></script>
+    <script src="data.js?v=m2n5p8"></script>
+    <script src="script.js?v=m2n5p8"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function () {

@@ -186,24 +186,41 @@ document.addEventListener('DOMContentLoaded', () => {
         const corridorsGroup = document.getElementById('corridors');
         const nodesGroup = document.getElementById('nodes-layer');
         const routeGroup = document.getElementById('route-layer');
-        
+
         corridorsGroup.innerHTML = '';
         nodesGroup.innerHTML = '';
         routeGroup.innerHTML = '';
 
         const nodesOnFloor = buildingData.nodes.filter(n => n.floor === floorId);
-        
+
+        // Add Floor Label (SVG background text)
+        const floorObj = buildingData.floors.find(f => f.id === floorId);
+        const floorLabelBg = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        floorLabelBg.setAttribute("x", 40);
+        floorLabelBg.setAttribute("y", 40);
+        floorLabelBg.setAttribute("width", 140);
+        floorLabelBg.setAttribute("height", 50);
+        floorLabelBg.setAttribute("class", "floor-label-bg");
+        corridorsGroup.appendChild(floorLabelBg);
+
+        const floorLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        floorLabel.setAttribute("x", 110);
+        floorLabel.setAttribute("y", 73);
+        floorLabel.setAttribute("class", "floor-label-text");
+        floorLabel.textContent = floorObj.name.toUpperCase();
+        corridorsGroup.appendChild(floorLabel);
+
         // Draw Corridors (Base paths based on edges on this floor)
         const drawnEdges = new Set();
         buildingData.edges.forEach(edge => {
             const n1 = buildingData.nodes.find(n => n.id === edge.from);
             const n2 = buildingData.nodes.find(n => n.id === edge.to);
-            
+
             if (n1.floor === floorId && n2.floor === floorId) {
                 const edgeId = [edge.from, edge.to].sort().join('-');
                 if (!drawnEdges.has(edgeId)) {
                     drawnEdges.add(edgeId);
-                    
+
                     const lineOut = document.createElementNS("http://www.w3.org/2000/svg", "line");
                     lineOut.setAttribute("x1", n1.x);
                     lineOut.setAttribute("y1", n1.y);
@@ -211,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     lineOut.setAttribute("y2", n2.y);
                     lineOut.setAttribute("class", "corridor-outline");
                     corridorsGroup.appendChild(lineOut);
-                    
+
                     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
                     line.setAttribute("x1", n1.x);
                     line.setAttribute("y1", n1.y);
@@ -231,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
             for (let i = 0; i < currentRoute.length; i++) {
                 const nId = currentRoute[i];
                 const node = buildingData.nodes.find(n => n.id === nId);
-                
+
                 if (node.floor === floorId) {
                     if (!isDrawing) {
                         pathData += `M ${node.x} ${node.y} `;
@@ -245,6 +262,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (pathData) {
+                const outerPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                outerPath.setAttribute("d", pathData);
+                outerPath.setAttribute("class", "route-path-outer");
+                routeGroup.appendChild(outerPath);
+
                 const routePath = document.createElementNS("http://www.w3.org/2000/svg", "path");
                 routePath.setAttribute("d", pathData);
                 routePath.setAttribute("class", "route-path");
@@ -257,8 +279,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
             circle.setAttribute("cx", node.x);
             circle.setAttribute("cy", node.y);
-            circle.setAttribute("r", node.type === 'hallway' ? 8 : 18);
-            
+            circle.setAttribute("r", node.type === 'hallway' ? 10 : 22);
+
             let nodeClass = "node";
             if (node.type !== 'hallway') nodeClass += ` ${node.type}`;
             if (currentRoute.length > 0) {
@@ -266,7 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (currentRoute[currentRoute.length - 1] === node.id) nodeClass += " end-pin";
             }
             circle.setAttribute("class", nodeClass);
-            
+
             // Allow clicking nodes to set destination
             if (node.type !== 'hallway') {
                 circle.addEventListener('click', () => {
@@ -274,14 +296,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     calculateAndShowRoute();
                 });
             }
-            
+
             nodesGroup.appendChild(circle);
 
             // Add Label
             if (node.label && node.type !== 'hallway') {
                 const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
                 text.setAttribute("x", node.x);
-                text.setAttribute("y", node.y - 25);
+                text.setAttribute("y", node.y - 35);
                 text.setAttribute("class", "node-label");
                 text.textContent = node.label;
                 nodesGroup.appendChild(text);
