@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building Wayfinding Directory</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="stylesheet" href="styles.css?v=x7k9p2">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="brand">
+                <h1>Wayfinder</h1>
+                <p>Digital Directory</p>
+            </div>
+
+            <div class="form-group">
+                <label for="start-location">You Are Here:</label>
+                <select id="start-location">
+                    <option value="" disabled selected>Select Starting Point...</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="end-location">Destination:</label>
+                <select id="end-location">
+                    <option value="" disabled selected>Select Destination...</option>
+                </select>
+            </div>
+
+            <button id="find-route-btn" class="primary-btn">Find Route</button>
+            <button id="reset-btn" class="secondary-btn">Reset</button>
+
+            <div id="directions-panel" class="directions-panel hidden">
+                <h2>Directions</h2>
+                <ul id="directions-list"></ul>
+            </div>
+        </div>
+
+        <!-- Map Area -->
+        <div class="map-area">
+            <div class="map-controls">
+                <button class="floor-btn active" data-floor="f1">Floor 1</button>
+                <button class="floor-btn" data-floor="f2">Floor 2</button>
+            </div>
+            
+            <div class="map-container" id="map-container">
+                <svg id="map-svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet">
+                    <!-- Base paths / Corridors (static drawing could go here, but we will generate dynamically for simplicity) -->
+                    <g id="corridors"></g>
+                    <!-- Route paths -->
+                    <g id="route-layer"></g>
+                    <!-- Nodes / Rooms -->
+                    <g id="nodes-layer"></g>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js?v=x7k9p2"></script>
+    <script src="script.js?v=x7k9p2"></script>
+</body>
+</html>
